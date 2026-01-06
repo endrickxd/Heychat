@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mychat</title>
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <audio id="msg-sound" src="https://assets.mixkit.co/active_storage/sfx/2354/2354-preview.mp3" preload="auto"></audio>
+    <div id="toast-container"></div>
+    
+    <div id="context-menu" class="context-menu hidden">
+        <button id="ctx-copy" class="ctx-item"><i class="ph-bold ph-copy"></i> Copiar texto</button>
+        <button id="ctx-delete" class="ctx-item delete"><i class="ph-bold ph-trash"></i> Eliminar</button>
+    </div>
+
+    <div class="liquid-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="glass-overlay"></div>
+    </div>
+
+    <section id="onboarding" class="screen active">
+        <div class="split-container">
+            <div class="left-panel">
+                <div class="brand-badge">5.0</div>
+                <h1 class="hero-title">Siente la<br>Conexión</h1>
+                <p class="hero-desc">La experiencia de chat definitiva. Audio HD, multimedia inmersiva y buen diseño.</p>
+                <button id="btn-start" class="ios-btn large">
+                    Comenzar <i class="ph-bold ph-arrow-right"></i>
+                </button>
+            </div>
+            <div class="right-panel">
+                <div class="image-card">
+                    <img src="assets/image/Photo.jpg" alt="App Art">
+                    <div class="card-glass-overlay">
+                        <div class="floating-bubble"> Hey, listen!</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="login" class="screen hidden">
+        <div class="ios-card center login-card-enhanced">
+            <div class="avatar-selector">
+                <div class="avatar-option active" data-icon="ph-user"><i class="ph-fill ph-user"></i></div>
+                <div class="avatar-option" data-icon="ph-alien"><i class="ph-fill ph-alien"></i></div>
+                <div class="avatar-option" data-icon="ph-robot"><i class="ph-fill ph-robot"></i></div>
+                <div class="avatar-option" data-icon="ph-cat"><i class="ph-fill ph-cat"></i></div>
+            </div>
+            <h2>Tu Identidad</h2>
+            <p class="login-sub">Elige tu avatar y nombre</p>
+            <div class="input-container">
+                <i class="ph-bold ph-text-t"></i>
+                <input type="text" id="nickname-input" class="ios-input-enhanced" placeholder="Escribe tu alias..." autocomplete="off">
+            </div>
+            <button id="btn-join" class="ios-btn full-width glow-effect" disabled>Entrar a la Sala</button>
+            <button id="btn-back-home" class="text-btn">Cancelar</button>
+        </div>
+    </section>
+
+    <section id="chat" class="screen hidden">
+        <div class="main-layout">
+            <header class="glass-header">
+                <div class="header-left clickable" id="room-info-trigger">
+                    <div class="avatar-group">
+                        <div class="avatar-gradient"><i class="ph-bold ph-hash"></i></div>
+                        <div class="status-indicator online"></div>
+                    </div>
+                    <div class="chat-meta">
+                        <h3>Sala Principal</h3>
+                        <span class="subtitle">Toca para info</span>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <button id="btn-settings" class="icon-btn-glass"><i class="ph-bold ph-sliders"></i></button>
+                    <button id="btn-leave" class="icon-btn-glass red"><i class="ph-bold ph-power"></i></button>
+                </div>
+            </header>
+
+            <div id="chat-window" class="chat-scroll-area">
+                <div class="date-divider">Hoy</div>
+                <div id="typing-indicator" class="typing-indicator hidden">
+                    <span></span><span></span><span></span>
+                </div>
+            </div>
+
+            <div class="input-area-wrapper">
+                <div id="reply-bar" class="reply-preview-bar hidden">
+                    <span id="reply-text">Respondiendo a...</span>
+                    <button id="close-reply" class="close-reply"><i class="ph-bold ph-x"></i></button>
+                </div>
+
+                <div id="recording-ui" class="glass-bar recording-mode hidden">
+                    <div class="rec-indicator">
+                        <div class="rec-dot"></div>
+                        <span id="rec-timer">00:00</span>
+                    </div>
+                    <div class="waveform-fake">
+                        <span></span><span></span><span></span><span></span><span></span>
+                    </div>
+                    <button id="btn-cancel-rec" class="icon-btn-glass red"><i class="ph-bold ph-trash"></i></button>
+                    <button id="btn-send-rec" class="send-btn-ios"><i class="ph-bold ph-paper-plane-right"></i></button>
+                </div>
+
+                <div id="normal-ui" class="glass-bar">
+                    <input type="file" id="file-input" accept="image/*" style="display: none;">
+                    <button id="emoji-btn" class="tool-btn"><i class="ph-fill ph-smiley"></i></button>
+                    <button id="attach-btn" class="tool-btn"><i class="ph-bold ph-image"></i></button>
+                    <input type="text" id="message-input" placeholder="Mensaje..." autocomplete="off">
+                    <button id="mic-btn" class="tool-btn"><i class="ph-bold ph-microphone"></i></button>
+                    <button id="send-btn" class="send-btn-ios hidden">
+                        <i class="ph-fill ph-arrow-up"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div id="settings-panel" class="settings-sheet">
+            <div class="sheet-header">
+                <h3>Ajustes</h3>
+                <button id="close-settings" class="close-btn"><i class="ph-bold ph-x"></i></button>
+            </div>
+            <div class="sheet-content">
+                <label style="display:block; margin-bottom: 10px; color: var(--text-secondary); font-size: 0.9rem;">Color de énfasis</label>
+                <div class="color-options">
+                    <div class="c-opt active" data-color="#007AFF" style="background:#007AFF"></div>
+                    <div class="c-opt" data-color="#34C759" style="background:#34C759"></div>
+                    <div class="c-opt" data-color="#AF52DE" style="background:#AF52DE"></div>
+                    <div class="c-opt" data-color="#FF2D55" style="background:#FF2D55"></div>
+                    <div class="c-opt" data-color="#FF9500" style="background:#FF9500"></div>
+                </div>
+                <label style="display:block; margin-top: 2rem; margin-bottom: 10px; color: var(--text-secondary); font-size: 0.9rem;">Apariencia</label>
+                <div class="theme-options">
+                    <button id="theme-dark" class="theme-btn active">Oscuro</button>
+                    <button id="theme-light" class="theme-btn">Claro</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="room-modal" class="modal-overlay hidden">
+            <div class="modal-card">
+                <div class="modal-header">
+                    <div class="avatar-gradient large"><i class="ph-bold ph-hash"></i></div>
+                    <h2>Sala Principal</h2>
+                    <p>Espacio público general</p>
+                </div>
+                <div class="modal-stats">
+                    <div class="stat-item">
+                        <span class="stat-val" id="modal-online">0</span>
+                        <span class="stat-label">En línea</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-val">Abierta</span>
+                        <span class="stat-label">Privacidad</span>
+                    </div>
+                </div>
+                <button id="close-modal" class="ios-btn full-width">Cerrar</button>
+            </div>
+        </div>
+    </section>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@joeattardi/emoji-button@4.6.4/dist/index.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
