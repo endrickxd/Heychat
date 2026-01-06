@@ -5,9 +5,7 @@ const path = require('path');
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIo(server, {
-    maxHttpBufferSize: 1e8
-});
+const io = socketIo(server, { maxHttpBufferSize: 1e8 });
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -18,32 +16,22 @@ const userRateLimit = new Map();
 async function getLinkPreview(text) {
     const urlRegex = /(https?:\/\/[^\s]+)/g;
     const match = text.match(urlRegex);
-    
     if (match && match[0]) {
         try {
             const url = match[0];
             const response = await fetch(url);
             const html = await response.text();
-            
             const titleMatch = html.match(/<title>(.*?)<\/title>/);
             const imgMatch = html.match(/<meta property="og:image" content="(.*?)"/);
-            
             if (titleMatch) {
-                return {
-                    url: url,
-                    title: titleMatch[1],
-                    image: imgMatch ? imgMatch[1] : null
-                };
+                return { url: url, title: titleMatch[1], image: imgMatch ? imgMatch[1] : null };
             }
-        } catch (e) {
-            console.log(e);
-        }
+        } catch (e) { console.log(e); }
     }
     return null;
 }
 
 io.on('connection', (socket) => {
-    
     socket.emit('history', messages);
     io.emit('onlineCount', users.length);
 
@@ -69,23 +57,22 @@ io.on('connection', (socket) => {
         if (user) {
             user.color = data.color;
             let linkData = null;
-            if (data.text) {
-                linkData = await getLinkPreview(data.text);
-            }
+            if (data.text) linkData = await getLinkPreview(data.text);
 
-            const msg = createMessage(
-                'user', 
-                data.text, 
-                user.nickname, 
-                socket.id, 
-                user.color, 
-                data.image,
-                data.audio,
-                linkData,
-                user.avatar
-            );
+            const msg = createMessage('user', data.text, user.nickname, socket.id, user.color, data.image, data.audio, linkData, user.avatar, data.replyTo);
             messages.push(msg);
             io.emit('message', msg);
+        }
+    });
+
+    socket.on('deleteMessage', (msgId) => {
+        const msgIndex = messages.findIndex(m => m.id === msgId);
+        if (msgIndex !== -1) {
+            const msg = messages[msgIndex];
+            if (msg.senderId === socket.id) {
+                messages.splice(msgIndex, 1);
+                io.emit('messageDeleted', msgId);
+            }
         }
     });
 
@@ -118,10 +105,10 @@ io.on('connection', (socket) => {
     });
 });
 
-function createMessage(type, text, senderName = null, senderId = null, color = null, image = null, audio = null, linkData = null, avatar = null) {
+function createMessage(type, text, senderName = null, senderId = null, color = null, image = null, audio = null, linkData = null, avatar = null, replyTo = null) {
     return {
         id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
-        type, text, image, audio, linkData, avatar,
+        type, text, image, audio, linkData, avatar, replyTo,
         senderName, senderId, senderColor: color,
         reactions: {},
         time: new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' }),

@@ -2,8 +2,8 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mychat</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>HeyChat</title>
     <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link rel="stylesheet" href="style.css">
@@ -12,8 +12,14 @@
     <audio id="msg-sound" src="https://assets.mixkit.co/active_storage/sfx/2354/2354-preview.mp3" preload="auto"></audio>
     <div id="toast-container"></div>
     
+    <div id="lightbox" class="lightbox hidden">
+        <button id="close-lightbox" class="close-lightbox-btn"><i class="ph-bold ph-x"></i></button>
+        <img id="lightbox-img" src="" alt="Zoom">
+    </div>
+
     <div id="context-menu" class="context-menu hidden">
         <button id="ctx-copy" class="ctx-item"><i class="ph-bold ph-copy"></i> Copiar texto</button>
+        <button id="ctx-reply" class="ctx-item"><i class="ph-bold ph-arrow-u-up-left"></i> Responder</button>
         <button id="ctx-delete" class="ctx-item delete"><i class="ph-bold ph-trash"></i> Eliminar</button>
     </div>
 
@@ -26,9 +32,9 @@
     <section id="onboarding" class="screen active">
         <div class="split-container">
             <div class="left-panel">
-                <div class="brand-badge">5.0</div>
-                <h1 class="hero-title">Siente la<br>Conexión</h1>
-                <p class="hero-desc">La experiencia de chat definitiva. Audio HD, multimedia inmersiva y buen diseño.</p>
+                <div class="brand-badge"> 5.0</div>
+                <h1 class="hero-title">Siente la<br>Conexión.</h1>
+                <p class="hero-desc">La experiencia de chat definitiva. Audio HD, multimedia inmersiva y diseño increible</p>
                 <button id="btn-start" class="ios-btn large">
                     Comenzar <i class="ph-bold ph-arrow-right"></i>
                 </button>
@@ -37,7 +43,7 @@
                 <div class="image-card">
                     <img src="assets/image/Photo.jpg" alt="App Art">
                     <div class="card-glass-overlay">
-                        <div class="floating-bubble"> Hey, listen!</div>
+                        <div class="floating-bubble">✨ Diseño Puro</div>
                     </div>
                 </div>
             </div>
@@ -91,7 +97,10 @@
 
             <div class="input-area-wrapper">
                 <div id="reply-bar" class="reply-preview-bar hidden">
-                    <span id="reply-text">Respondiendo a...</span>
+                    <div class="reply-info">
+                        <span class="reply-label">Respondiendo a <b id="reply-name">Usuario</b></span>
+                        <span id="reply-text" class="reply-msg-preview">Mensaje...</span>
+                    </div>
                     <button id="close-reply" class="close-reply"><i class="ph-bold ph-x"></i></button>
                 </div>
 

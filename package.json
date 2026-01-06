@@ -1,16 +1,17 @@
 {
-  "name": "chat",
-  "version": "1.0.0",
-  "main": "index.js",
+  "name": "heychat",
+  "version": "5.0.0",
+  "description": "Chat en tiempo real con UI Glassmorphism y Audio HD",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
-    "express": "^5.2.1",
-    "socket.io": "^4.8.3"
+    "express": "^4.18.2",
+    "socket.io": "^4.7.2"
+  },
+  "engines": {
+    "node": ">=18.x"
   }
 }
