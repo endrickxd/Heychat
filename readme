@@ -7,7 +7,6 @@
 
 * ** UI Glassmorphism:** Interfaz visual basada en transparencias y desenfoques (efecto cristal).
 * ** Notas de Voz HD:** Grabación y reproducción de audio integrada con visualización de ondas.
-* ** Temas Dinámicos:** Soporte completo para **Modo Oscuro** (Default) y **Modo Hielo** (Claro).
 * **Diseño Responsivo:** Adaptado para móviles con menús deslizables y feedback háptico (vibración).
 * ** Link Previews:** Previsualización automática de enlaces compartidos (scraping ligero).
 * ** Anti-Spam:** Sistema de "Rate Limiting" para evitar saturación de mensajes.
