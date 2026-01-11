@@ -2,45 +2,6 @@
 
 > Una experiencia de mensajería inmersiva con diseño Glassmorphism, audio en tiempo real y una interfaz fluida.
 
-
-## Características Principales
-
-* ** UI Glassmorphism:** Interfaz visual basada en transparencias y desenfoques (efecto cristal).
-* ** Notas de Voz HD:** Grabación y reproducción de audio integrada con visualización de ondas.
-* **Diseño Responsivo:** Adaptado para móviles con menús deslizables y feedback háptico (vibración).
-* ** Link Previews:** Previsualización automática de enlaces compartidos (scraping ligero).
-* ** Anti-Spam:** Sistema de "Rate Limiting" para evitar saturación de mensajes.
-* ** WebSockets:** Comunicación bidireccional instantánea usando Socket.io.
-
-## Tecnologías
-
-* **Backend:** Node.js, Express.
-* **Real-time:** Socket.io (WebSockets).
-* **Frontend:** HTML5, CSS3 (Variables, Flexbox, Grid), Vanilla JS.
-* **Assets:** Phosphor Icons, FontShare (Satoshi).
-
-## Instalación Local
-
-1.  **Clonar el repositorio:**
-    ```bash
-    git clone [https://github.com/tu-usuario/iglass-chat.git](https://github.com/tu-usuario/iglass-chat.git)
-    cd iglass-chat
-    ```
-
-2.  **Instalar dependencias:**
-    ```bash
-    npm install
-    ```
-
-3.  **Iniciar el servidor:**
-    ```bash
-    npm start
-    ```
-
-4.  **Acceder:** Abre `http://localhost:3000` en tu navegador.
-
-## 📄 Licencia
-
 Este proyecto está bajo la Licencia MIT. Siéntete libre de usarlo y mejorarlo.
 
 ---
